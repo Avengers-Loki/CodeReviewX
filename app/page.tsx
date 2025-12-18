@@ -4,7 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Github, BookOpen, Code2 } from 'lucide-react';
-import Cookies from 'js-cookie';
+
 
 export default function Home() {
     const [repoUrl, setRepoUrl] = useState('');
@@ -27,24 +27,8 @@ export default function Home() {
         //    - If usage < 1 -> Allow and increment
         //    - If usage >= 1 -> Redirect to signup
 
-        const token = Cookies.get('token'); // Assuming 'token' is the cookie name
-
-        if (token) {
-            router.push(`/analyze?repo=${path}`);
-            return;
-        }
-
-        // Check local storage for free usage
-        const usageCount = parseInt(localStorage.getItem('codewiki_free_usage') || '0', 10);
-
-        if (usageCount < 1) {
-            // First time free
-            localStorage.setItem('codewiki_free_usage', (usageCount + 1).toString());
-            router.push(`/analyze?repo=${path}`);
-        } else {
-            // Already used once, require signup
-            router.push('/signup');
-        }
+        // Redirect to analyze page - server will handle usage limits or auth
+        router.push(`/analyze?repo=${path}`);
     };
 
 

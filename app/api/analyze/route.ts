@@ -1,10 +1,39 @@
-
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req: Request) {
     try {
         const { code, filename, repo } = await req.json();
+
+        // --- Usage Limit Logic ---
+        const cookieStore = cookies();
+        const token = cookieStore.get('token');
+        let isAuthenticated = false;
+
+        const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
+
+        if (token) {
+            try {
+                // Verify token if it exists
+                jwt.verify(token.value, JWT_SECRET);
+                isAuthenticated = true;
+            } catch (e) {
+                console.log('Invalid token provided, treating as guest');
+            }
+        }
+
+        if (!isAuthenticated) {
+            const usageCookie = cookieStore.get('codewiki_guest_usage');
+            if (usageCookie) {
+                return NextResponse.json(
+                    { error: 'Free Usage Limit Reached. Please Sign In to continue using CodeWiki.' },
+                    { status: 403 }
+                );
+            }
+        }
+        // -------------------------
 
         const apiKey = process.env.GEMINI_API_KEY;
         if (!apiKey) {
@@ -63,7 +92,20 @@ export async function POST(req: Request) {
 
         const text = await generateWithRetry(3, 5000);
 
-        return NextResponse.json({ result: text });
+        const response = NextResponse.json({ result: text });
+
+        // If guest, mark as used
+        if (!isAuthenticated) {
+            response.cookies.set('codewiki_guest_usage', 'true', {
+                httpOnly: true,
+                secure: process.env.NODE_ENV === 'production',
+                sameSite: 'strict',
+                maxAge: 60 * 60 * 24 * 365, // 1 year
+                path: '/',
+            });
+        }
+
+        return response;
 
     } catch (error: any) {
         console.error('Gemini Analysis Error:', error);

@@ -132,6 +132,11 @@ function AnalyzeContent() {
 
                 const aiData = await aiRes.json();
 
+                if (aiRes.status === 403) {
+                    setWikiContent(`# Free Usage Limit Reached 🚀\n\nYou have used your one-time free analysis.\n\n[**Sign Up / Log In**](/signup) to continue analyzing repositories unlimitedly.`);
+                    return;
+                }
+
                 if (aiRes.status === 429) {
                     const waitTime = aiData.retryAfter || 60;
                     let countdown = waitTime;
