@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "@google/generative-ai": "^0.24.1",
+        "@vercel/analytics": "^1.6.1",
         "bcryptjs": "^3.0.3",
         "framer-motion": "^10.18.0",
         "js-cookie": "^3.0.5",

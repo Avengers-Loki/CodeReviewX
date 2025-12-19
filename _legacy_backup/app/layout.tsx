@@ -1,6 +1,7 @@
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 import Navbar from '@/components/Navbar';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -21,6 +22,7 @@ export default function RootLayout({
             <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
                 <Navbar />
                 <main>{children}</main>
+                <Analytics />
             </body>
         </html>
     );
