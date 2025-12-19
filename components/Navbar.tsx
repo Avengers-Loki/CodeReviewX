@@ -47,11 +47,11 @@ export default function Navbar() {
                     ) : (
                         <div className="flex items-center gap-8">
                             <Link
-                                href="/signup"
-                                className="flex items-center gap-3 text-xl font-bold text-[var(--primary)] hover:text-purple-600 transition-colors bg-transparent border-none p-0"
+                                href="/login"
+                                className="flex items-center gap-3 text-xl font-extrabold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity bg-transparent border-none p-0"
                             >
-                                <User size={24} />
-                                Sign Up
+                                <User size={24} className="text-violet-600" />
+                                Sign In
                             </Link>
                         </div>
                     )}
