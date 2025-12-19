@@ -49,12 +49,9 @@ export default function Navbar() {
                         </button>
                     ) : (
                         <div className="flex items-center gap-8">
-                            <Link href="/login" className="text-[var(--secondary)] hover:text-[var(--primary)] px-5 py-2.5 text-lg font-medium transition-colors">
-                                Sign In
-                            </Link>
-                            <Link href="/signup" className="flex items-center gap-3 bg-[var(--primary)] text-white px-10 py-4 rounded-full text-lg font-bold hover:brightness-110 hover:shadow-xl hover:-translate-y-0.5 transition-all active:scale-95 active:translate-y-0">
+                            <Link href="/login" className="flex items-center gap-3 bg-[var(--primary)] text-white px-8 py-3 rounded-full text-lg font-bold hover:brightness-110 hover:shadow-xl hover:-translate-y-0.5 transition-all active:scale-95 active:translate-y-0">
                                 <User size={20} />
-                                Get Started
+                                Sign In
                             </Link>
                         </div>
                     )}
