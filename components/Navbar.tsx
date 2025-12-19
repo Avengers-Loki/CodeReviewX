@@ -28,17 +28,20 @@ export default function Navbar() {
         <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-24 flex items-center shrink-0 transition-all">
             <div className="w-full max-w-[1920px] mx-auto px-10 flex items-center justify-between">
 
-                <Link href="/" className="flex items-center gap-3 text-2xl font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
-                    <div className="bg-[var(--primary)]/10 p-2 rounded-lg">
-                        <Code className="text-[var(--primary)]" size={32} />
-                    </div>
-                    <span className="tracking-tight">Code<span className="text-[var(--primary)]">Wiki</span></span>
-                </Link>
-                <div className="flex items-center gap-10">
-                    <Link href="/" className="text-[var(--secondary)] hover:text-[var(--foreground)] text-base font-medium transition-colors">
-                        Documentation
+                <div className="flex items-center gap-12">
+                    <Link href="/" className="flex items-center gap-3 text-2xl font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
+                        <div className="bg-[var(--primary)]/10 p-2 rounded-lg">
+                            <Code className="text-[var(--primary)]" size={32} />
+                        </div>
+                        <span className="tracking-tight">Code<span className="text-[var(--primary)]">Wiki</span></span>
                     </Link>
 
+                    <Link href="/" className="text-[var(--secondary)] hover:text-[var(--foreground)] text-base font-medium transition-colors hidden md:block">
+                        Documentation
+                    </Link>
+                </div>
+
+                <div className="flex items-center gap-10">
                     {isLoggedIn ? (
                         <button
                             onClick={handleLogout}
