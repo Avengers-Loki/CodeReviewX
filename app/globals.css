@@ -22,13 +22,13 @@
   padding: 0;
 }
 
-/* ---------------- BASE ---------------- */
+/* ---------------- BASE (DO NOT AFFECT HEADER) ---------------- */
 html,
 body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  /* prevent page-level horizontal scroll */
+  /* page never scrolls horizontally */
   font-family: var(--font-sans);
   background: var(--background);
   color: var(--foreground);
@@ -40,14 +40,23 @@ a {
   text-decoration: none;
 }
 
-/* ---------------- FLEX FIX (CRITICAL) ---------------- */
+/* ---------------- HEADER SAFETY ---------------- */
+/* These rules DO NOT modify header layout */
+header,
+.navbar,
+.topbar {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* ---------------- FLEX (SAFE FIX) ---------------- */
 .flex {
   display: flex;
 }
 
-.flex>* {
+/* Apply shrink fix ONLY to non-header children */
+.flex>*:not(header):not(.navbar):not(.topbar) {
   min-width: 0;
-  /* REQUIRED for horizontal scrolling */
 }
 
 .flex-col {
@@ -352,7 +361,8 @@ p {
   color: var(--secondary);
 }
 
-/* ---------------- CODE & MARKDOWN (KEY FIX) ---------------- */
+/* ---------------- CONTENT SCROLL (KEY FIX) ---------------- */
+/* Horizontal scroll works ONLY here */
 main,
 .content,
 .viewer,
@@ -362,6 +372,7 @@ main,
   min-width: 0;
 }
 
+/* ---------------- CODE ---------------- */
 pre {
   max-width: 100%;
   overflow-x: auto;
@@ -409,46 +420,4 @@ img {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
-}
-
-/* ---------------- UTILITIES (Horizontal Scroll Fix) ---------------- */
-.overflow-hidden {
-  overflow: hidden;
-}
-
-.overflow-auto {
-  overflow: auto;
-}
-
-.overflow-x-auto {
-  overflow-x: auto;
-}
-
-.overflow-y-auto {
-  overflow-y: auto;
-}
-
-.relative {
-  position: relative;
-}
-
-/* Widths */
-.max-w-3xl {
-  max-width: 48rem;
-}
-
-.max-w-4xl {
-  max-width: 56rem;
-}
-
-.max-w-full {
-  max-width: 100%;
-}
-
-.w-80 {
-  width: 20rem;
-}
-
-.w-96 {
-  width: 24rem;
 }
