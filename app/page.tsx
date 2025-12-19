@@ -49,7 +49,7 @@ export default function Home() {
     };
 
 
-    const popularRepos = ['facebook/react', 'vercel/next.js', 'tensorflow/tensorflow'];
+
 
     return (
         <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)]" style={{ padding: '4rem 1rem' }}>
@@ -78,14 +78,7 @@ export default function Home() {
                     </button>
                 </form>
 
-                <div style={{ marginTop: '2rem', display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
-                    <span style={{ color: 'var(--secondary)', fontSize: '0.9rem' }}>Popular:</span>
-                    {popularRepos.map(repo => (
-                        <button key={repo} onClick={() => router.push(`/analyze?repo=${repo}`)} style={{ background: 'none', border: 'none', color: '#7456F1', cursor: 'pointer', fontSize: '0.9rem', fontWeight: 500 }}>
-                            {repo}
-                        </button>
-                    ))}
-                </div>
+
 
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '2rem', marginTop: '5rem', textAlign: 'left' }}>
                     <FeatureCard
