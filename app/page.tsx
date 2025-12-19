@@ -21,14 +21,24 @@ export default function Home() {
             path = url.pathname.slice(1);
         }
 
-        // Logic:
-        // 1. If logged in (token cookie exists) -> Allow
-        // 2. If not logged in -> Check free usage in localStorage
-        //    - If usage < 1 -> Allow and increment
-        //    - If usage >= 1 -> Redirect to signup
+        // Check if user is logged in (token cookie exists)
+        const isLoggedIn = document.cookie.includes('token=');
 
-        // Redirect to analyze page - server will handle usage limits or auth
-        router.push(`/analyze?repo=${path}`);
+        if (isLoggedIn) {
+            router.push(`/analyze?repo=${path}`);
+            return;
+        }
+
+        // Check usage for guest
+        const usageCount = parseInt(localStorage.getItem('guest_usage_count') || '0', 10);
+
+        if (usageCount < 1) {
+            localStorage.setItem('guest_usage_count', (usageCount + 1).toString());
+            router.push(`/analyze?repo=${path}`);
+        } else {
+            // Redirect to signup with return URL
+            router.push(`/signup?returnUrl=${encodeURIComponent(`/analyze?repo=${path}`)}`);
+        }
     };
 
 
