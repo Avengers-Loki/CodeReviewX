@@ -25,33 +25,33 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-16 flex items-center shrink-0 transition-all">
-            <div className="w-full max-w-[1920px] mx-auto px-6 flex items-center justify-between">
-                <Link href="/" className="flex items-center gap-2.5 text-lg font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
-                    <div className="bg-[var(--primary)]/10 p-1.5 rounded-md">
-                        <Code className="text-[var(--primary)]" size={20} />
+        <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-24 flex items-center shrink-0 transition-all">
+            <div className="w-full max-w-[1920px] mx-auto px-10 flex items-center justify-between">
+                <Link href="/" className="flex items-center gap-3 text-2xl font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
+                    <div className="bg-[var(--primary)]/10 p-2 rounded-lg">
+                        <Code className="text-[var(--primary)]" size={32} />
                     </div>
                     <span className="tracking-tight">Code<span className="text-[var(--primary)]">Wiki</span></span>
                 </Link>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center gap-10">
                     {isLoggedIn ? (
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-8">
                             <button
                                 onClick={handleLogout}
-                                className="flex items-center gap-2 text-sm font-bold text-[var(--primary)] hover:text-purple-600 transition-colors bg-transparent border-none p-0"
+                                className="flex items-center gap-3 text-xl font-bold text-[var(--primary)] hover:text-purple-600 transition-colors bg-transparent border-none p-0"
                             >
-                                <LogOut size={18} />
+                                <LogOut size={24} />
                                 Sign Out
                             </button>
                         </div>
                     ) : (
-                        <div className="flex items-center gap-4">
+                        <div className="flex items-center gap-8">
                             <Link
-                                href="/login"
-                                className="flex items-center gap-2 text-sm font-bold bg-gradient-to-r from-blue-600 to-violet-600 bg-clip-text text-transparent hover:opacity-80 transition-opacity bg-transparent border-none p-0"
+                                href="/signup"
+                                className="flex items-center gap-3 text-xl font-bold text-[var(--primary)] hover:text-purple-600 transition-colors bg-transparent border-none p-0"
                             >
-                                <User size={18} className="text-violet-600" />
-                                Sign In
+                                <User size={24} />
+                                Sign Up
                             </Link>
                         </div>
                     )}

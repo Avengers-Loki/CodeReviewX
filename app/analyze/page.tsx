@@ -24,7 +24,9 @@ export default function AnalyzePage() {
 
 function AnalyzeContent() {
     const searchParams = useSearchParams();
-    const repo = searchParams.get('repo');
+    const rawRepo = searchParams.get('repo');
+    // Robustly handle full URLs or clean paths
+    const repo = rawRepo ? rawRepo.replace(/^(https?:\/\/)?(www\.)?github\.com\//, '').replace(/\/$/, '') : null;
 
     const [fileTree, setFileTree] = useState<FileNode[]>([]);
     const [selectedFile, setSelectedFile] = useState<FileNode | null>(null);
@@ -215,10 +217,47 @@ function AnalyzeContent() {
         }
     }
 
+    // Sidebar Resizing State
+    const [sidebarWidth, setSidebarWidth] = useState(250);
+    const [isResizing, setIsResizing] = useState(false);
+
+    useEffect(() => {
+        const handleMouseMove = (e: MouseEvent) => {
+            if (!isResizing) return;
+            setSidebarWidth(e.clientX); // Simple resizing logic (assuming sidebar is on left)
+        };
+
+        const handleMouseUp = () => {
+            setIsResizing(false);
+        };
+
+        if (isResizing) {
+            document.addEventListener('mousemove', handleMouseMove);
+            document.addEventListener('mouseup', handleMouseUp);
+        } else {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        }
+
+        return () => {
+            document.removeEventListener('mousemove', handleMouseMove);
+            document.removeEventListener('mouseup', handleMouseUp);
+        };
+    }, [isResizing]);
+
     return (
-        <div className="flex flex-row h-[calc(100vh-4rem)] overflow-hidden w-full items-stretch">
+        <div className="flex flex-row h-[calc(100vh-4rem)] overflow-hidden w-full items-stretch select-none">
             {/* Sidebar (Explorer) */}
-            <aside className="w-40 shrink-0 border-r border-[var(--border)] bg-[var(--surface)] flex flex-col transition-all">
+            <aside
+                className="shrink-0 border-r border-[var(--border)] bg-[var(--surface)] flex flex-col relative group"
+                style={{ width: sidebarWidth, minWidth: '150px', maxWidth: '600px' }}
+            >
+                {/* Drag Handle */}
+                <div
+                    className="absolute right-0 top-0 bottom-0 w-1 cursor-col-resize hover:bg-[var(--primary)] transition-colors z-10"
+                    onMouseDown={() => setIsResizing(true)}
+                />
+
                 <div className="px-4 py-3 border-b border-[var(--border)] select-none">
                     <h2 className="text-xs font-bold text-[var(--secondary)] uppercase tracking-wider">Explorer</h2>
                     <p className="text-xs text-[var(--secondary)] truncate mt-1" title={repo || ''}>

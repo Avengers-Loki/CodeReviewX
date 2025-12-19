@@ -13,7 +13,9 @@
   --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
 }
 
-/* ---------------- RESET ---------------- */
+/* ===============================
+   RESET
+================================ */
 *,
 *::before,
 *::after {
@@ -22,13 +24,15 @@
   padding: 0;
 }
 
-/* ---------------- BASE ---------------- */
+/* ===============================
+   BASE (DO NOT TOUCH HEADER)
+================================ */
 html,
 body {
   width: 100%;
   max-width: 100%;
   overflow-x: hidden;
-  /* prevent page-level horizontal scroll */
+  /* page never scrolls */
   font-family: var(--font-sans);
   background: var(--background);
   color: var(--foreground);
@@ -40,14 +44,26 @@ a {
   text-decoration: none;
 }
 
-/* ---------------- FLEX FIX (CRITICAL) ---------------- */
+/* ===============================
+   HEADER SAFETY (UNCHANGED)
+================================ */
+header,
+.navbar,
+.topbar {
+  overflow: hidden;
+  max-width: 100%;
+}
+
+/* ===============================
+   FLEX LAYOUT FIX (CRITICAL)
+================================ */
 .flex {
   display: flex;
 }
 
-.flex>* {
+/* Allow scrolling in content, not header */
+.flex>*:not(header):not(.navbar):not(.topbar) {
   min-width: 0;
-  /* REQUIRED for horizontal scrolling */
 }
 
 .flex-col {
@@ -74,7 +90,9 @@ a {
   justify-content: flex-end;
 }
 
-/* ---------------- LAYOUT ---------------- */
+/* ===============================
+   LAYOUT
+================================ */
 .container {
   width: 100%;
   max-width: 1200px;
@@ -106,7 +124,9 @@ a {
   flex-grow: 1;
 }
 
-/* ---------------- SPACING ---------------- */
+/* ===============================
+   SPACING
+================================ */
 .p-1 {
   padding: 0.25rem;
 }
@@ -177,7 +197,9 @@ a {
   margin-right: auto;
 }
 
-/* ---------------- BORDERS ---------------- */
+/* ===============================
+   BORDERS & RADIUS
+================================ */
 .border {
   border: 1px solid var(--border);
 }
@@ -222,7 +244,9 @@ a {
   border-radius: 9999px;
 }
 
-/* ---------------- TEXT ---------------- */
+/* ===============================
+   TEXT
+================================ */
 .text-xs {
   font-size: 0.75rem;
 }
@@ -257,7 +281,9 @@ a {
   white-space: nowrap;
 }
 
-/* ---------------- COLORS ---------------- */
+/* ===============================
+   COLORS
+================================ */
 .bg-transparent {
   background-color: transparent;
 }
@@ -282,7 +308,9 @@ a {
   color: var(--primary);
 }
 
-/* ---------------- BUTTONS ---------------- */
+/* ===============================
+   BUTTONS
+================================ */
 .btn {
   display: inline-flex;
   align-items: center;
@@ -308,7 +336,9 @@ a {
   border-color: var(--primary);
 }
 
-/* ---------------- INPUT ---------------- */
+/* ===============================
+   INPUT
+================================ */
 .input {
   width: 100%;
   padding: 0.5rem 0.75rem;
@@ -323,7 +353,9 @@ a {
   box-shadow: 0 0 0 3px rgba(116, 86, 241, 0.2);
 }
 
-/* ---------------- CARD ---------------- */
+/* ===============================
+   CARD
+================================ */
 .card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -331,7 +363,9 @@ a {
   padding: 1.5rem;
 }
 
-/* ---------------- TYPOGRAPHY ---------------- */
+/* ===============================
+   TYPOGRAPHY
+================================ */
 h1 {
   font-size: 2.5rem;
   margin-bottom: 1rem;
@@ -352,17 +386,31 @@ p {
   color: var(--secondary);
 }
 
-/* ---------------- CODE & MARKDOWN (KEY FIX) ---------------- */
-main,
-.content,
-.viewer,
+/* ===============================
+   WIKI / ANALYSIS VIEW
+   (WRAPS TEXT — NO HORIZONTAL SCROLL)
+================================ */
 .markdown,
-.markdown-body {
-  overflow-x: auto;
-  min-width: 0;
+.markdown-body,
+.wiki,
+.analysis {
+  overflow-x: hidden;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
-pre {
+.markdown p,
+.markdown li {
+  white-space: normal;
+}
+
+/* ===============================
+   CODE VIEW
+   (HORIZONTAL SCROLL ENABLED)
+================================ */
+pre,
+.code-view,
+.code-block {
   max-width: 100%;
   overflow-x: auto;
   white-space: pre;
@@ -373,17 +421,22 @@ pre {
 
 code {
   font-family: var(--font-mono);
-  white-space: pre;
+  white-space: pre-wrap;
+  word-break: break-word;
   color: #d63384;
 }
 
-/* ---------------- MEDIA ---------------- */
+/* ===============================
+   MEDIA
+================================ */
 img {
   max-width: 100%;
   height: auto;
 }
 
-/* ---------------- SCROLLBAR ---------------- */
+/* ===============================
+   SCROLLBAR
+================================ */
 ::-webkit-scrollbar {
   width: 6px;
   height: 6px;
@@ -394,7 +447,9 @@ img {
   border-radius: 999px;
 }
 
-/* ---------------- ANIMATIONS ---------------- */
+/* ===============================
+   ANIMATION
+================================ */
 @keyframes fadeIn {
   from {
     opacity: 0;
