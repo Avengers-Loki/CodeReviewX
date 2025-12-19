@@ -25,7 +25,7 @@ export default function Navbar() {
     }
 
     return (
-        <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-16 flex items-center shrink-0 transition-all">
+        <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-20 flex items-center shrink-0 transition-all">
             <div className="w-full max-w-[1920px] mx-auto px-6 flex items-center justify-between">
 
                 <Link href="/" className="flex items-center gap-2.5 text-xl font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
