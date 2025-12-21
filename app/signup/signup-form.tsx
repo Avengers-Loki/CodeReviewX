@@ -18,20 +18,31 @@ export default function SignupForm() {
 
     useEffect(() => {
         const initializeGoogleLogin = () => {
-            if ((window as any).google) {
+            const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+            if (!clientId) {
+                console.error("Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID");
+                return;
+            }
+
+            if ((window as any).google && (window as any).google.accounts) {
                 (window as any).google.accounts.id.initialize({
-                    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+                    client_id: clientId,
                     callback: (window as any).handleGoogleLogin
                 });
-                (window as any).google.accounts.id.renderButton(
-                    document.getElementById("google-signup-btn"),
-                    { theme: "outline", size: "large", width: "400", type: "standard", shape: "rectangular", text: "signup_with", logo_alignment: "left" }
-                );
+
+                const btnContainer = document.getElementById("google-signup-btn");
+                if (btnContainer) {
+                    (window as any).google.accounts.id.renderButton(
+                        btnContainer,
+                        { theme: "outline", size: "large", width: "400", type: "standard", shape: "rectangular", text: "signup_with", logo_alignment: "left" }
+                    );
+                }
             }
         };
 
         (window as any).handleGoogleLogin = async (response: any) => {
             try {
+                setLoading(true);
                 const res = await fetch("/api/google-login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -42,9 +53,11 @@ export default function SignupForm() {
                     window.location.href = '/';
                 } else {
                     setError(data.error || 'Google signup failed');
+                    setLoading(false);
                 }
             } catch (err) {
                 setError('Google signup error');
+                setLoading(false);
             }
         };
 
@@ -54,7 +67,7 @@ export default function SignupForm() {
                 initializeGoogleLogin();
                 clearInterval(interval);
             }
-        }, 100);
+        }, 500);
 
         return () => clearInterval(interval);
     }, []);
@@ -154,15 +167,8 @@ export default function SignupForm() {
                     </div>
                 )}
 
-                {/* Google Login Button */}
-                {/* Google Login Button */}
                 {/* Google Signup Button */}
                 <div style={{ position: 'relative', width: '100%', marginBottom: '24px' }}>
-                    <div id="g_id_onload"
-                        data-client_id={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-                        data-callback="handleGoogleLogin"
-                        data-auto_prompt="false">
-                    </div>
                     {/* Invisible Google Button Overlay */}
                     <div id="google-signup-btn"
                         style={{

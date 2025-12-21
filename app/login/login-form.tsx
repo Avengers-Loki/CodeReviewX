@@ -18,21 +18,32 @@ export default function LoginForm() {
 
     useEffect(() => {
         const initializeGoogleLogin = () => {
-            if ((window as any).google) {
+            const clientId = process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID;
+            if (!clientId) {
+                console.error("Missing NEXT_PUBLIC_GOOGLE_CLIENT_ID");
+                return;
+            }
+
+            if ((window as any).google && (window as any).google.accounts) {
                 (window as any).google.accounts.id.initialize({
-                    client_id: process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID,
+                    client_id: clientId,
                     callback: (window as any).handleGoogleLogin
                 });
-                (window as any).google.accounts.id.renderButton(
-                    document.getElementById("google-signin-btn"),
-                    { theme: "outline", size: "large", width: "400", type: "standard", shape: "rectangular", text: "sign_in_with", logo_alignment: "left" }
-                );
+
+                const btnContainer = document.getElementById("google-signin-btn");
+                if (btnContainer) {
+                    (window as any).google.accounts.id.renderButton(
+                        btnContainer,
+                        { theme: "outline", size: "large", width: "400", type: "standard", shape: "rectangular", text: "sign_in_with", logo_alignment: "left" }
+                    );
+                }
             }
         };
 
         // Attach callback globally
         (window as any).handleGoogleLogin = async (response: any) => {
             try {
+                setLoading(true);
                 const res = await fetch("/api/google-login", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
@@ -43,24 +54,24 @@ export default function LoginForm() {
                     window.location.href = '/';
                 } else {
                     setError(data.error || 'Google login failed');
+                    setLoading(false);
                 }
             } catch (err) {
                 setError('Google login error');
+                setLoading(false);
             }
         };
 
-        // Initialize immediately if script acts fast, or wait for onload
+        // Initialize immediately if script is already there
         initializeGoogleLogin();
 
         // Also listen for script load if not ready
-        // But since script is lazyOnload in layout, it might be late or already there
-        // simpler approach: retry a few times or use interval if critical
         const interval = setInterval(() => {
             if ((window as any).google && (window as any).google.accounts) {
                 initializeGoogleLogin();
                 clearInterval(interval);
             }
-        }, 100);
+        }, 500);
 
         return () => clearInterval(interval);
     }, []);
@@ -161,14 +172,7 @@ export default function LoginForm() {
                 )}
 
                 {/* Google Login Button */}
-                {/* Google Login Button */}
-                {/* Google Login Button */}
                 <div style={{ position: 'relative', width: '100%', marginBottom: '24px' }}>
-                    <div id="g_id_onload"
-                        data-client_id={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID}
-                        data-callback="handleGoogleLogin"
-                        data-auto_prompt="false">
-                    </div>
                     {/* Invisible Google Button Overlay */}
                     <div id="google-signin-btn"
                         style={{
