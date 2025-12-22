@@ -30,13 +30,28 @@
 html,
 body {
   width: 100%;
+  height: 100vh;
+  height: -webkit-fill-available;
   max-width: 100%;
-  overflow-x: hidden;
-  /* page never scrolls */
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
   font-family: var(--font-sans);
   background: var(--background);
   color: var(--foreground);
   line-height: 1.6;
+}
+
+.h-nav {
+  height: 56px !important;
+}
+
+.flex-1 {
+  flex: 1;
+}
+
+.overflow-hidden {
+  overflow: hidden;
 }
 
 a {
@@ -450,6 +465,9 @@ img {
 /* ===============================
    ANIMATION
 ================================ */
+/* ===============================
+   ANIMATION
+================================ */
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -464,4 +482,146 @@ img {
 
 .animate-fade-in {
   animation: fadeIn 0.5s ease-out forwards;
+}
+
+/* ===============================
+   UTILITIES (MISSING FROM TAILWIND)
+================================ */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.top-0 {
+  top: 0;
+}
+
+.right-0 {
+  right: 0;
+}
+
+.bottom-0 {
+  bottom: 0;
+}
+
+.left-0 {
+  left: 0;
+}
+
+.z-10 {
+  z-index: 10;
+}
+
+.z-20 {
+  z-index: 20;
+}
+
+.z-30 {
+  z-index: 30;
+}
+
+.w-80 {
+  width: 20rem;
+}
+
+/* 320px */
+.min-w-\[320px\] {
+  min-width: 320px;
+}
+
+.max-w-\[320px\] {
+  max-width: 320px;
+}
+
+.max-w-\[85\%\] {
+  max-width: 85%;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-y-auto {
+  overflow-y: auto;
+}
+
+.overflow-x-auto {
+  overflow-x: auto;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden;
+}
+
+.shadow-xl {
+  box-shadow: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+.shadow-sm {
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+}
+
+.opacity-50 {
+  opacity: 0.5;
+}
+
+.opacity-60 {
+  opacity: 0.6;
+}
+
+.select-none {
+  user-select: none;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-col-resize {
+  cursor: col-resize;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+.items-stretch {
+  align-items: stretch;
+}
+
+.gap-2 {
+  gap: 0.5rem;
+}
+
+.gap-4 {
+  gap: 1rem;
+}
+
+.space-y-4>*+* {
+  margin-top: 1rem;
+}
+
+.transition-all {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-colors {
+  transition-property: background-color, border-color, color, fill, stroke;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+.transition-transform {
+  transition-property: transform;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
 }

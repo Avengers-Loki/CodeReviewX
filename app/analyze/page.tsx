@@ -4,6 +4,7 @@ import { useEffect, useState, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { Folder, FileCode, ChevronRight, Book, Code, Loader2, AlertCircle, MessageSquare, Send, X, Sparkles } from 'lucide-react';
 import ReactMarkdown from 'react-markdown';
+import Mermaid from '@/components/Mermaid';
 
 // Types
 type FileNode = {
@@ -246,7 +247,7 @@ function AnalyzeContent() {
     }, [isResizing]);
 
     return (
-        <div className="flex flex-row h-[calc(100vh-4rem)] overflow-hidden w-full items-stretch select-none">
+        <div className="flex flex-row h-full overflow-hidden w-full items-stretch">
             {/* Sidebar (Explorer) */}
             <aside
                 className="shrink-0 border-r border-[var(--border)] bg-[var(--surface)] flex flex-col relative group"
@@ -287,7 +288,7 @@ function AnalyzeContent() {
             </aside>
 
             {/* Main Content */}
-            <main className="flex-1 flex flex-col bg-[var(--background)] relative min-w-0 overflow-hidden">
+            <main className="flex-1 flex flex-col bg-[var(--background)] relative min-w-0 min-h-0 overflow-hidden h-full">
                 {selectedFile ? (
                     <>
                         <header className="h-14 border-b border-[var(--border)] flex items-center justify-between px-6 bg-[var(--surface)] shrink-0">
@@ -296,38 +297,38 @@ function AnalyzeContent() {
                                 <span className="font-semibold truncate">{selectedFile.name}</span>
                             </div>
                             <div className="flex items-center gap-3 shrink-0">
-                                <div className="flex bg-[var(--background)] p-1 rounded-md border border-[var(--border)] shrink-0">
+                                <div className="flex bg-[var(--background)] p-1 rounded-md border border-[var(--border)] shrink-0 h-12 items-center">
                                     <button
                                         onClick={() => setActiveTab('wiki')}
-                                        className={`flex items-center gap-2 px-3 py-1 text-sm rounded-sm transition-colors ${activeTab === 'wiki' ? 'bg-[var(--surface-hover)] shadow-sm font-medium' : 'hover:bg-[var(--surface-hover)] text-[var(--secondary)]'}`}
+                                        className={`flex items-center gap-2 px-6 h-full text-base rounded transition-all duration-200 border-2 ${activeTab === 'wiki' ? 'bg-[var(--surface)] text-[var(--primary)] border-[var(--primary)] font-bold shadow-sm' : 'bg-transparent text-[var(--secondary)] border-transparent hover:bg-[var(--surface-hover)]'}`}
                                     >
-                                        <Book size={14} /> Wiki
+                                        <Book size={20} /> Wiki
                                     </button>
                                     <button
                                         onClick={() => setActiveTab('code')}
-                                        className={`flex items-center gap-2 px-3 py-1 text-sm rounded-sm transition-colors ${activeTab === 'code' ? 'bg-[var(--surface-hover)] shadow-sm font-medium' : 'hover:bg-[var(--surface-hover)] text-[var(--secondary)]'}`}
+                                        className={`flex items-center gap-2 px-6 h-full text-base rounded transition-all duration-200 border-2 ${activeTab === 'code' ? 'bg-[var(--surface)] text-[var(--primary)] border-[var(--primary)] font-bold shadow-sm' : 'bg-transparent text-[var(--secondary)] border-transparent hover:bg-[var(--surface-hover)]'}`}
                                     >
-                                        <Code size={14} /> Code
+                                        <Code size={20} /> Code
                                     </button>
                                 </div>
                                 <button
                                     onClick={() => setIsChatOpen(!isChatOpen)}
-                                    className={`p-2 rounded-md transition-colors border border-[var(--border)] ${isChatOpen ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'bg-[var(--surface)] hover:bg-[var(--surface-hover)] text-[var(--secondary)]'}`}
+                                    className={`p-3 rounded-md transition-colors border border-[var(--border)] ${isChatOpen ? 'bg-[var(--primary)] text-white border-[var(--primary)]' : 'bg-[var(--surface)] hover:bg-[var(--surface-hover)] text-[var(--secondary)]'}`}
                                     title="Toggle Chat"
                                 >
-                                    <MessageSquare size={18} />
+                                    <MessageSquare size={22} />
                                 </button>
                             </div>
                         </header>
 
-                        <div className="flex-1 overflow-auto p-8 custom-scrollbar relative">
+                        <div className="flex-1 overflow-y-auto min-h-0 h-full p-8 custom-scrollbar relative">
                             {contentLoading ? (
                                 <div className="h-full flex flex-col items-center justify-center text-[var(--secondary)] gap-4">
                                     <Loader2 className="animate-spin" size={32} />
                                     <span>Fetching file content...</span>
                                 </div>
                             ) : activeTab === 'wiki' ? (
-                                <div className="max-w-3xl mx-auto">
+                                <div className="max-w-4xl mx-auto">
                                     {wikiLoading ? (
                                         <div className="flex flex-col items-center justify-center py-20 gap-4 text-[var(--secondary)] animate-pulse">
                                             <div className="h-2 w-32 bg-[var(--surface-hover)] rounded"></div>
@@ -335,13 +336,27 @@ function AnalyzeContent() {
                                             <p className="text-sm">Codewiki is analyzing logic...</p>
                                         </div>
                                     ) : (
-                                        <div className="prose max-w-4xl mx-auto pb-20 overflow-x-auto">
-                                            <ReactMarkdown>{wikiContent}</ReactMarkdown>
+                                        <div className="rounded-md overflow-hidden border-2 border-[var(--primary)] bg-[var(--surface)] p-8 shadow-md mb-10 ring-4 ring-[var(--primary)]/5">
+                                            <div className="prose max-w-none prose-slate prose-invert">
+                                                <ReactMarkdown
+                                                    components={{
+                                                        code({ node, className, children, ...props }) {
+                                                            const match = /language-(\w+)/.exec(className || '');
+                                                            if (match && match[1] === 'mermaid') {
+                                                                return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                                                            }
+                                                            return <code className={className} {...props}>{children}</code>;
+                                                        }
+                                                    }}
+                                                >
+                                                    {wikiContent}
+                                                </ReactMarkdown>
+                                            </div>
                                         </div>
                                     )}
                                 </div>
                             ) : (
-                                <div className="rounded-md overflow-hidden border border-[var(--border)] bg-[#0d1117] max-w-full">
+                                <div className="rounded-md overflow-hidden border-2 border-[var(--primary)] bg-[#0d1117] max-w-full shadow-lg ring-4 ring-[var(--primary)]/5">
                                     <div className="overflow-x-auto p-4">
                                         <pre className="text-sm font-mono leading-relaxed">
                                             <code>{fileContent}</code>
@@ -361,9 +376,9 @@ function AnalyzeContent() {
                 )}
             </main>
 
-            {/* Chat Sidebar */}
+            {/* Chat Sidebar (Split Screen) */}
             {isChatOpen && (
-                <aside className="w-80 shrink-0 border-l border-[var(--border)] bg-[var(--surface)] flex flex-col shadow-xl z-20 transition-all h-full max-h-full">
+                <aside className="w-80 min-w-[320px] max-w-[320px] shrink-0 border-l border-[var(--border)] bg-[var(--surface)] flex flex-col shadow-xl z-20 h-full overflow-hidden">
                     <div className="p-4 border-b border-[var(--border)] flex justify-between items-center bg-[var(--surface)]">
                         <h2 className="font-semibold flex items-center gap-2 text-lg"><Sparkles size={18} className="text-[var(--primary)]" /> AI Assistant</h2>
                         <button onClick={() => setIsChatOpen(false)} className="text-[var(--secondary)] hover:text-[var(--text)]">
@@ -371,7 +386,7 @@ function AnalyzeContent() {
                         </button>
                     </div>
 
-                    <div className="flex-1 overflow-y-auto p-4 space-y-4 custom-scrollbar bg-[var(--background)]">
+                    <div className="flex-1 overflow-y-auto overflow-x-hidden p-4 space-y-4 custom-scrollbar bg-[var(--background)]">
                         {chatMessages.length === 0 ? (
                             <div className="flex flex-col items-center justify-center h-full text-[var(--secondary)] text-center opacity-60">
                                 <MessageSquare size={48} className="mb-2" />
@@ -381,7 +396,19 @@ function AnalyzeContent() {
                             chatMessages.map((msg, i) => (
                                 <div key={i} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                                     <div className={`max-w-[85%] rounded-lg p-3 text-sm ${msg.role === 'user' ? 'bg-[var(--primary)] text-white' : 'bg-[var(--surface-hover)] text-[var(--text)] border border-[var(--border)]'}`}>
-                                        <ReactMarkdown>{msg.content}</ReactMarkdown>
+                                        <ReactMarkdown
+                                            components={{
+                                                code({ node, className, children, ...props }) {
+                                                    const match = /language-(\w+)/.exec(className || '');
+                                                    if (match && match[1] === 'mermaid') {
+                                                        return <Mermaid chart={String(children).replace(/\n$/, '')} />;
+                                                    }
+                                                    return <code className={className} {...props}>{children}</code>;
+                                                }
+                                            }}
+                                        >
+                                            {msg.content}
+                                        </ReactMarkdown>
                                     </div>
                                 </div>
                             ))
@@ -398,7 +425,7 @@ function AnalyzeContent() {
                     <div className="p-4 border-t border-[var(--border)] bg-[var(--surface)]">
                         <form
                             onSubmit={(e) => { e.preventDefault(); handleSendMessage(); }}
-                            className="flex items-center gap-2 bg-[var(--background)] border border-[var(--border)] rounded-md px-3 py-2 focus-within:ring-1 focus-within:ring-[var(--primary)]"
+                            className="flex items-center gap-2 bg-[var(--background)] border border-[var(--border)] rounded-md px-3 py-2"
                         >
                             <input
                                 type="text"
@@ -410,7 +437,7 @@ function AnalyzeContent() {
                             <button
                                 type="submit"
                                 disabled={!chatInput.trim() || chatLoading}
-                                className="text-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed hover:scale-110 transition-transform"
+                                className="text-[var(--primary)] disabled:opacity-50 disabled:cursor-not-allowed"
                             >
                                 <Send size={16} />
                             </button>

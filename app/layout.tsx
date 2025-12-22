@@ -20,10 +20,10 @@ export default function RootLayout({
 }) {
     return (
         <html lang="en">
-            <body className={`${inter.variable} ${jetbrainsMono.variable}`}>
+            <body className={`${inter.variable} ${jetbrainsMono.variable} flex flex-col h-screen overflow-hidden`}>
                 <Script src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
                 <Navbar />
-                <main>{children}</main>
+                <main className="flex-1 overflow-hidden">{children}</main>
                 <Analytics />
             </body>
         </html>
