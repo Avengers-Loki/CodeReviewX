@@ -28,3 +28,12 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# temporary files
+lint_output.txt
+*_BACKUP*/
+_legacy*/
+
+# temporary documentation
+CLEANUP_SUMMARY.md
+RESTRUCTURING_PLAN.md
