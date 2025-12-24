@@ -12,8 +12,8 @@ export const metadata: Metadata = {
     title: 'CodeReviewX - AI Powered Code Analysis',
     description: 'Understand any codebase in seconds.',
     icons: {
-        icon: '/logo.png',
-        apple: '/logo.png',
+        icon: '/logo.png?v=2',
+        apple: '/logo.png?v=2',
     },
 };
 
