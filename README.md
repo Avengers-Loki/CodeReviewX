@@ -40,8 +40,6 @@ Whether you're onboarding to a new codebase, conducting code reviews, or documen
 
 ## ✨ Features
 
-![Features Showcase](./docs/images/features_showcase_updated.png)
-
 ### 🔍 **Instant Repository Analysis**
 - Paste any public GitHub repository URL
 - Automatic codebase structure analysis
