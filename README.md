@@ -135,8 +135,8 @@ CodeReviewX follows a modern, scalable architecture:
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Avengers-Loki/Code-Analyzer.git
-   cd Code-Analyzer
+   git clone https://github.com/Avengers-Loki/CodeReviewX.git
+   cd CodeReviewX
    ```
 
 2. **Install dependencies**
