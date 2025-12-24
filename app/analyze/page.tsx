@@ -333,7 +333,7 @@ function AnalyzeContent() {
                                         <div className="flex flex-col items-center justify-center py-20 gap-4 text-[var(--secondary)] animate-pulse">
                                             <div className="h-2 w-32 bg-[var(--surface-hover)] rounded"></div>
                                             <div className="h-2 w-48 bg-[var(--surface-hover)] rounded"></div>
-                                            <p className="text-sm">Codewiki is analyzing logic...</p>
+                                            <p className="text-sm"> CodeReviewX is analyzing logic...</p>
                                         </div>
                                     ) : (
                                         <div className="rounded-md overflow-hidden border-2 border-[var(--primary)] bg-[var(--surface)] p-8 shadow-md mb-10 ring-4 ring-[var(--primary)]/5">

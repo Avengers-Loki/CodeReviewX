@@ -11,10 +11,6 @@ const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mon
 export const metadata: Metadata = {
     title: 'CodeReviewX - AI Powered Code Analysis',
     description: 'Understand any codebase in seconds.',
-    icons: {
-        icon: '/logo.png?v=3',
-        apple: '/logo.png?v=3',
-    },
 };
 
 export default function RootLayout({
