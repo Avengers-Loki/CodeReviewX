@@ -26,6 +26,16 @@
 
 Whether you're onboarding to a new codebase, conducting code reviews, or documenting your projects, CodeWiki accelerates your workflow with AI-driven insights.
 
+### 🎯 Live Preview
+
+<div align="center">
+
+![CodeWiki Application](./docs/images/app_homepage.png)
+
+*↑ Clean, professional interface - Just paste a GitHub URL and get instant AI-powered analysis*
+
+</div>
+
 ---
 
 ## ✨ Features
@@ -101,10 +111,15 @@ CodeWiki follows a modern, scalable architecture:
 
 ## 🖼️ Screenshots
 
-### Main Interface
-![Interface Preview](./docs/images/interface_preview.png)
+### Homepage - Simple & Elegant
+![CodeWiki Homepage](./docs/images/app_homepage.png)
 
-*Code analysis interface with file explorer, code viewer, and AI assistant*
+*Clean landing page with instant GitHub repository search and feature showcase*
+
+### Analysis Interface
+![Analysis Interface](./docs/images/interface_preview.png)
+
+*Interactive code analysis with file explorer, syntax-highlighted code viewer, and AI-powered chat assistant*
 
 ---
 
@@ -415,7 +430,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 If you have any questions or need help:
 
-- 📧 Email: your-email@example.com
+- 📧 Email: vvinayagaam763@gmail.com
 - 💬 [Open an issue](https://github.com/Avengers-Loki/Code-Analyzer/issues)
 - 📖 [Read the docs](#-features)
 
