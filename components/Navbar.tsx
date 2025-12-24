@@ -29,12 +29,12 @@ export default function Navbar() {
         <nav className="sticky top-0 z-50 border-b border-[var(--border)] bg-[var(--surface)]/80 backdrop-blur-md h-14 h-nav flex items-center shrink-0 transition-all">
             <div className="w-full max-w-[1920px] mx-auto px-6 flex items-center justify-between">
                 <Link href="/" className="flex items-center gap-2 text-lg font-bold text-[var(--foreground)] hover:opacity-80 transition-opacity">
-                    <div className="relative w-8 h-8">
+                    <div className="relative w-8 h-8 rounded-full overflow-hidden">
                         <Image
                             src="/logo.png"
                             alt="CodeReviewX Logo"
                             fill
-                            className="object-contain"
+                            className="object-cover"
                             priority
                         />
                     </div>
