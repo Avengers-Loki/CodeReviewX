@@ -149,7 +149,7 @@ CodeWiki follows a modern, scalable architecture:
    Create a `.env.local` file in the root directory:
    ```env
    # MongoDB Connection
-   MONGODB_URI=mongodb+srv://username:password@cluster.mongodb.net/codewiki
+   MONGODB_URI=your_mongodb_url_paste
    
    # Google AI
    GOOGLE_AI_API_KEY=your_gemini_api_key_here
