@@ -10,7 +10,7 @@
 [![Google AI](https://img.shields.io/badge/Google_AI-Gemini-orange?style=for-the-badge&logo=google)](https://ai.google.dev/)
 [![License](https://img.shields.io/badge/License-MIT-purple?style=for-the-badge)](LICENSE)
 
-[Live Demo](https://your-demo-url.vercel.app) • [Documentation](#-features) • [Installation](#-installation) • [Contributing](#-contributing)
+[🌐 Live Demo](https://code-analyzer-drab.vercel.app/) • [Documentation](#-features) • [Installation](#-installation) • [Contributing](#-contributing)
 
 ---
 
@@ -116,10 +116,10 @@ CodeWiki follows a modern, scalable architecture:
 
 *Clean landing page with instant GitHub repository search and feature showcase*
 
-### Analysis Interface
-![Analysis Interface](./docs/images/interface_preview.png)
+### Analysis Interface - Full Code View
+![Analysis Interface](./docs/images/analysis_interface.png)
 
-*Interactive code analysis with file explorer, syntax-highlighted code viewer, and AI-powered chat assistant*
+*Complete analysis view showing file explorer (left), AI-generated documentation with syntax highlighting (center), and Wiki/Code toggle for different perspectives*
 
 ---
 
@@ -430,7 +430,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 If you have any questions or need help:
 
-- 📧 Email: vvinayagaam763@gmail.com
+- 📧 Email: vvinayagam763@gmail.com
 - 💬 [Open an issue](https://github.com/Avengers-Loki/Code-Analyzer/issues)
 - 📖 [Read the docs](#-features)
 
