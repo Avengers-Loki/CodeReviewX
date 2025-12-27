@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Branch Cleanup Script
 # This script helps safely delete merged branches from the repository
@@ -70,7 +70,11 @@ PROTECTED_BRANCHES=("main" "master" "develop" "development")
 CURRENT_BRANCH=$(git rev-parse --abbrev-ref HEAD)
 
 # Get default branch
-DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@' || echo "main")
+DEFAULT_BRANCH=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's@^refs/remotes/origin/@@')
+if [ -z "$DEFAULT_BRANCH" ]; then
+  echo -e "${YELLOW}⚠️  Could not detect default branch, assuming 'main'${NC}"
+  DEFAULT_BRANCH="main"
+fi
 
 echo -e "${BLUE}=== Branch Cleanup Script ===${NC}"
 echo -e "Current branch: ${GREEN}${CURRENT_BRANCH}${NC}"
@@ -112,27 +116,21 @@ for BRANCH in $BRANCHES; do
   done
   [ "$SKIP" = true ] && continue
   
-  # Check if branch is merged
-  if git merge-base --is-ancestor "$BRANCH" "$DEFAULT_BRANCH" 2>/dev/null; then
-    # Check if branch has any unique commits
-    UNIQUE_COMMITS=$(git rev-list --count "$DEFAULT_BRANCH..$BRANCH" 2>/dev/null || echo "0")
-    
-    if [ "$UNIQUE_COMMITS" = "0" ]; then
-      if [ "$DRY_RUN" = true ]; then
-        echo -e "🗑️  ${GREEN}[DRY RUN] Would delete merged branch: ${BRANCH}${NC}"
-      else
-        if git branch -d "$BRANCH" 2>/dev/null; then
-          echo -e "✅ ${GREEN}Deleted merged branch: ${BRANCH}${NC}"
-        else
-          echo -e "⚠️  ${RED}Failed to delete branch: ${BRANCH}${NC}"
-        fi
-      fi
-      DELETED_COUNT=$((DELETED_COUNT + 1))
+  # Check if branch is fully merged into default branch using git branch --merged
+  if git branch --merged "$DEFAULT_BRANCH" | grep -q "^[* ]*${BRANCH}$"; then
+    # Branch is fully merged
+    if [ "$DRY_RUN" = true ]; then
+      echo -e "🗑️  ${GREEN}[DRY RUN] Would delete merged branch: ${BRANCH}${NC}"
     else
-      echo -e "⏩ ${YELLOW}Skipping branch with ${UNIQUE_COMMITS} unique commits: ${BRANCH}${NC}"
-      SKIPPED_COUNT=$((SKIPPED_COUNT + 1))
+      if git branch -d "$BRANCH" 2>/dev/null; then
+        echo -e "✅ ${GREEN}Deleted merged branch: ${BRANCH}${NC}"
+      else
+        echo -e "⚠️  ${RED}Failed to delete branch: ${BRANCH}${NC}"
+      fi
     fi
+    DELETED_COUNT=$((DELETED_COUNT + 1))
   else
+    # Branch is not merged
     if [ "$FORCE" = true ]; then
       if [ "$DRY_RUN" = true ]; then
         echo -e "🗑️  ${RED}[DRY RUN] Would FORCE delete unmerged branch: ${BRANCH}${NC}"
