@@ -32,9 +32,12 @@ jobs:
         uses: actions/github-script@v7
         with:
           script: |
+            // Configuration
+            const MAX_BRANCHES_TO_PROCESS = 500; // Safety limit to prevent excessive processing
+            
             // For scheduled runs, always use dry run mode for safety
             // For manual runs, respect the input parameter (default is 'true')
-            const isScheduled = context.eventName === 'schedule';
+            const isScheduled = github.event_name === 'schedule';
             const dryRunInput = '${{ github.event.inputs.dry_run }}' || 'true';
             const dryRun = isScheduled || dryRunInput === 'true';
             const owner = context.repo.owner;
@@ -50,7 +53,7 @@ jobs:
               const perPage = 100;
               let hasMore = true;
               
-              while (hasMore && branches.length < 500) { // Safety limit: 500 branches max
+              while (hasMore && branches.length < MAX_BRANCHES_TO_PROCESS) {
                 const { data: branchPage } = await github.rest.repos.listBranches({
                   owner: owner,
                   repo: repo,
