@@ -304,6 +304,40 @@ Make sure to add these environment variables in Vercel:
 
 ---
 
+## 🌿 Branch Management
+
+CodeReviewX uses a main-branch-only workflow with automated branch cleanup to maintain a clean repository.
+
+### Automated Cleanup
+
+- **Delete Merged Branches**: Automatically deletes branches after PR merge
+- **Stale Branch Cleanup**: Weekly automated cleanup of fully-merged branches
+- **Protected Branches**: `main` branch is protected and cannot be deleted
+
+### Manual Branch Deletion
+
+For detailed instructions on safely deleting branches, see [Branch Management Guide](./docs/BRANCH_MANAGEMENT.md).
+
+**Quick Commands:**
+```bash
+# List all branches
+git branch -a
+
+# Delete local merged branch
+git branch -d branch-name
+
+# Delete remote branch
+git push origin --delete branch-name
+
+# Use the cleanup script (dry-run by default)
+./scripts/cleanup-branches.sh
+
+# Actually delete branches
+./scripts/cleanup-branches.sh --no-dry-run
+```
+
+---
+
 ## 🤝 Contributing
 
 Contributions are welcome! Please follow these steps:

@@ -1,0 +1,125 @@
+name: Cleanup Stale Branches
+
+on:
+  schedule:
+    # Run every Sunday at 00:00 UTC
+    - cron: '0 0 * * 0'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Dry run (list branches without deleting)'
+        required: false
+        default: 'true'
+        type: choice
+        options:
+          - 'true'
+          - 'false'
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    name: Cleanup Stale Branches
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      
+      - name: Cleanup Stale Branches
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const dryRun = '${{ github.event.inputs.dry_run }}' !== 'false';
+            console.log(`Running in ${dryRun ? 'DRY RUN' : 'LIVE'} mode`);
+            
+            // Protected branches that should never be deleted
+            const protectedBranches = ['main', 'master', 'develop', 'development'];
+            
+            // Get default branch
+            const { data: repo } = await github.rest.repos.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo
+            });
+            const defaultBranch = repo.default_branch;
+            console.log(`Default branch: ${defaultBranch}`);
+            
+            // Get all branches
+            let page = 1;
+            let allBranches = [];
+            while (true) {
+              const { data: branches } = await github.rest.repos.listBranches({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                per_page: 100,
+                page: page
+              });
+              
+              if (branches.length === 0) break;
+              allBranches = allBranches.concat(branches);
+              page++;
+            }
+            
+            console.log(`Found ${allBranches.length} branches`);
+            
+            const branchesToDelete = [];
+            
+            for (const branch of allBranches) {
+              const branchName = branch.name;
+              
+              // Skip protected branches
+              if (protectedBranches.includes(branchName) || branchName === defaultBranch) {
+                console.log(`⏩ Skipping protected branch: ${branchName}`);
+                continue;
+              }
+              
+              try {
+                // Check if branch is merged into default branch
+                const comparison = await github.rest.repos.compareCommitsWithBasehead({
+                  owner: context.repo.owner,
+                  repo: context.repo.repo,
+                  basehead: `${defaultBranch}...${branchName}`
+                });
+                
+                // If ahead_by is 0, the branch has no unique commits (fully merged)
+                if (comparison.data.ahead_by === 0) {
+                  console.log(`🔍 Branch '${branchName}' is fully merged (no unique commits)`);
+                  branchesToDelete.push(branchName);
+                } else {
+                  console.log(`⏩ Branch '${branchName}' has ${comparison.data.ahead_by} unique commits`);
+                }
+              } catch (error) {
+                console.log(`⚠️  Error checking branch '${branchName}': ${error.message}`);
+              }
+            }
+            
+            console.log(`\n📋 Summary: ${branchesToDelete.length} branches to delete`);
+            
+            if (branchesToDelete.length === 0) {
+              console.log('✅ No stale branches to clean up');
+              return;
+            }
+            
+            for (const branchName of branchesToDelete) {
+              if (dryRun) {
+                console.log(`[DRY RUN] Would delete: ${branchName}`);
+              } else {
+                try {
+                  await github.rest.git.deleteRef({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    ref: `heads/${branchName}`
+                  });
+                  console.log(`✅ Deleted branch: ${branchName}`);
+                } catch (error) {
+                  console.log(`❌ Failed to delete '${branchName}': ${error.message}`);
+                }
+              }
+            }
+            
+            if (dryRun) {
+              console.log('\n💡 This was a dry run. To actually delete branches, run this workflow with dry_run=false');
+            }
