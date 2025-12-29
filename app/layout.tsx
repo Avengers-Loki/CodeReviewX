@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 import { Inter, JetBrains_Mono } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 import Navbar from '@/components/Navbar';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-sans' });
@@ -25,6 +26,7 @@ export default function RootLayout({
                 <Navbar />
                 <main className="flex-1 overflow-hidden">{children}</main>
                 <Analytics />
+                <SpeedInsights />
             </body>
         </html>
     );
