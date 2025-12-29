@@ -6,10 +6,10 @@ export async function POST(req: Request) {
     try {
         const { messages, context } = await req.json();
 
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = process.env.GOOGLE_AI_API_KEY;
         if (!apiKey) {
             return NextResponse.json(
-                { error: 'GEMINI_API_KEY is not set' },
+                { error: 'GOOGLE_AI_API_KEY is not set' },
                 { status: 500 }
             );
         }

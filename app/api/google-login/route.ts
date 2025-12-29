@@ -7,6 +7,11 @@ import jwt from 'jsonwebtoken';
 const client = new OAuth2Client(process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID);
 const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
 
+// Warn if using default secret in production
+if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'your-secret-key-change-this') {
+    console.error('WARNING: Using default JWT_SECRET in production! Set JWT_SECRET environment variable.');
+}
+
 export async function POST(req: NextRequest) {
     try {
         const body = await req.json();

@@ -13,6 +13,11 @@ export async function POST(req: Request) {
         let isAuthenticated = false;
 
         const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
+        
+        // Warn if using default secret in production
+        if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'your-secret-key-change-this') {
+            console.error('WARNING: Using default JWT_SECRET in production! Set JWT_SECRET environment variable.');
+        }
 
         if (token) {
             try {
@@ -20,7 +25,8 @@ export async function POST(req: Request) {
                 jwt.verify(token.value, JWT_SECRET);
                 isAuthenticated = true;
             } catch (e) {
-                console.log('Invalid token provided, treating as guest');
+                // Invalid token, treating as guest
+                isAuthenticated = false;
             }
         }
 
@@ -35,10 +41,10 @@ export async function POST(req: Request) {
         }
         // -------------------------
 
-        const apiKey = process.env.GEMINI_API_KEY;
+        const apiKey = process.env.GOOGLE_AI_API_KEY;
         if (!apiKey) {
             return NextResponse.json(
-                { error: 'GEMINI_API_KEY is not set in environment variables.' },
+                { error: 'GOOGLE_AI_API_KEY is not set in environment variables.' },
                 { status: 500 }
             );
         }

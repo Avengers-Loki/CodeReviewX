@@ -162,7 +162,7 @@ function AnalyzeContent() {
                 }
 
                 if (!aiRes.ok) {
-                    setWikiContent(`**Error generating analysis**: ${aiData.error || 'Unknown error'}. \n\n Please ensure you have set a valid \`GEMINI_API_KEY\` in your \`.env.local\` file.`);
+                    setWikiContent(`**Error generating analysis**: ${aiData.error || 'Unknown error'}. \n\n Please ensure you have set a valid \`GOOGLE_AI_API_KEY\` in your \`.env.local\` file.`);
                 } else {
                     setWikiContent(aiData.result);
                 }
