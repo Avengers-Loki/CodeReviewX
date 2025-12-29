@@ -8,12 +8,12 @@ export async function POST(req: Request) {
         const { code, filename, repo } = await req.json();
 
         // --- Usage Limit Logic ---
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         const token = cookieStore.get('token');
         let isAuthenticated = false;
 
         const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
-        
+
         // Warn if using default secret in production
         if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'your-secret-key-change-this') {
             console.error('WARNING: Using default JWT_SECRET in production! Set JWT_SECRET environment variable.');

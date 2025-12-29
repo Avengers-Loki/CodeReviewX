@@ -113,8 +113,13 @@ function AnalyzeContent() {
             }
 
             // GitHub returns base64
-            // Fix newlines and decode
-            const content = decodeURIComponent(escape(atob(data.content.replace(/\n/g, ''))));
+            // Fix newlines and decode using TextDecoder for robust UTF-8 support
+            const binaryString = atob(data.content.replace(/\n/g, ''));
+            const bytes = new Uint8Array(binaryString.length);
+            for (let i = 0; i < binaryString.length; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            const content = new TextDecoder().decode(bytes);
             setFileContent(content);
             setContentLoading(false);
 
