@@ -20,7 +20,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     return (
-        <html lang="en">
+        <html lang="en" suppressHydrationWarning>
             <body className={`${inter.variable} ${jetbrainsMono.variable} flex flex-col h-screen overflow-hidden`}>
                 <Script src="https://accounts.google.com/gsi/client" strategy="lazyOnload" />
                 <Navbar />
