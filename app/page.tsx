@@ -28,8 +28,8 @@ export default function Home() {
         }
         path = path.replace(/\/$/, ''); // Remove trailing slash
 
-        // Check if user is logged in (token cookie exists)
-        const isLoggedIn = document.cookie.includes('token=');
+        // Check if user is logged in (use non-HttpOnly flag)
+        const isLoggedIn = document.cookie.includes('is_logged_in=true');
 
         if (isLoggedIn) {
             router.push(`/analyze?repo=${path}`);

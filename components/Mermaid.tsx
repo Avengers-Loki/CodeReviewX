@@ -15,7 +15,7 @@ const Mermaid: React.FC<MermaidProps> = ({ chart }) => {
         mermaid.initialize({
             startOnLoad: true,
             theme: 'dark',
-            securityLevel: 'loose',
+            securityLevel: 'strict',
             fontFamily: 'inherit',
         });
 

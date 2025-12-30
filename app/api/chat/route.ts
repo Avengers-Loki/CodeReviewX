@@ -1,10 +1,35 @@
 
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import { NextResponse } from 'next/server';
+import { cookies } from 'next/headers';
+import jwt from 'jsonwebtoken';
 
 export async function POST(req: Request) {
     try {
         const { messages, context } = await req.json();
+
+        // --- Authentication Check ---
+        const cookieStore = await cookies();
+        const token = cookieStore.get('token');
+        const JWT_SECRET = process.env.JWT_SECRET;
+
+        if (!token || !JWT_SECRET) {
+            return NextResponse.json(
+                { error: 'Authentication required. Please sign in to use the AI Assistant.' },
+                { status: 401 }
+            );
+        }
+
+        try {
+            jwt.verify(token.value, JWT_SECRET);
+        } catch (e) {
+            return NextResponse.json(
+                { error: 'Invalid or expired session. Please sign in again.' },
+                { status: 401 }
+            );
+        }
+        // -------------------------
+
 
         const apiKey = process.env.GOOGLE_AI_API_KEY;
         if (!apiKey) {

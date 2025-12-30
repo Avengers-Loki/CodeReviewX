@@ -72,9 +72,18 @@ export async function POST(req: NextRequest) {
             }
         });
 
-        // Set cookie
+        // Set HttpOnly token cookie
         response.cookies.set('token', jwtToken, {
-            httpOnly: false, // Must be false so client-side js-cookie can read it (per existing Navbar logic)
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'strict',
+            maxAge: 60 * 60 * 24 * 30, // 30 days
+            path: '/',
+        });
+
+        // Set non-HttpOnly cookie for UI logic
+        response.cookies.set('is_logged_in', 'true', {
+            httpOnly: false,
             secure: process.env.NODE_ENV === 'production',
             sameSite: 'strict',
             maxAge: 60 * 60 * 24 * 30, // 30 days

@@ -13,16 +13,25 @@ export default function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     useEffect(() => {
-        // Check for token on mount
-        const token = Cookies.get('token');
-        setIsLoggedIn(!!token);
+        // Check for non-sensitive flag on mount
+        const loggedIn = Cookies.get('is_logged_in');
+        setIsLoggedIn(!!loggedIn);
     }, []);
 
-    function handleLogout() {
-        Cookies.remove('token');
-        setIsLoggedIn(false);
-        router.push('/login');
-        router.refresh();
+    async function handleLogout() {
+        try {
+            await fetch('/api/auth/logout', { method: 'POST' });
+            Cookies.remove('is_logged_in');
+            setIsLoggedIn(false);
+            router.push('/login');
+            router.refresh();
+        } catch (error) {
+            console.error('Logout failed:', error);
+            // Fallback: clear local state anyway
+            Cookies.remove('is_logged_in');
+            setIsLoggedIn(false);
+            router.push('/login');
+        }
     }
 
     return (
