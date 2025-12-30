@@ -12,14 +12,13 @@ export async function POST(req: Request) {
         const token = cookieStore.get('token');
         let isAuthenticated = false;
 
-        const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
-
-        // Warn if using default secret in production
-        if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'your-secret-key-change-this') {
-            console.error('WARNING: Using default JWT_SECRET in production! Set JWT_SECRET environment variable.');
+        const JWT_SECRET = process.env.JWT_SECRET;
+        if (!JWT_SECRET) {
+            console.error('JWT_SECRET is not set');
+            // We can continue as guest if allowed, but verification needs it
         }
 
-        if (token) {
+        if (token && JWT_SECRET) {
             try {
                 // Verify token if it exists
                 jwt.verify(token.value, JWT_SECRET);

@@ -6,12 +6,12 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { cookies } from 'next/headers';
 
-const JWT_SECRET = process.env.JWT_SECRET || 'your-secret-key-change-this';
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// Warn if using default secret in production
-if (process.env.NODE_ENV === 'production' && JWT_SECRET === 'your-secret-key-change-this') {
-    console.error('WARNING: Using default JWT_SECRET in production! Set JWT_SECRET environment variable.');
+if (!JWT_SECRET) {
+    console.error('JWT_SECRET is not defined in environment variables');
 }
+
 
 
 export async function POST(request: Request) {
@@ -49,6 +49,10 @@ export async function POST(request: Request) {
         }
 
         // Create token
+        if (!JWT_SECRET) {
+            return NextResponse.json({ error: 'Authentication service misconfigured' }, { status: 500 });
+        }
+
         const token = jwt.sign(
             { id: user._id, email: user.email, name: user.name },
             JWT_SECRET,
