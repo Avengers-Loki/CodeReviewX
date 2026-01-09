@@ -49,7 +49,7 @@ export async function POST(req: Request) {
         }
 
         const genAI = new GoogleGenerativeAI(apiKey);
-        const model = genAI.getGenerativeModel({ model: 'gemma-3-27b-it' });
+        const model = genAI.getGenerativeModel({ model: 'gemini-3-flash' });
 
         const prompt = `
         You are an expert software engineer and technical writer. 

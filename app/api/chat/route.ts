@@ -41,7 +41,7 @@ export async function POST(req: Request) {
 
         const genAI = new GoogleGenerativeAI(apiKey);
         const model = genAI.getGenerativeModel({
-            model: 'gemma-3-27b-it',
+            model: 'gemini-3-flash',
         });
 
         // Prepare history
