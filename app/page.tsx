@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search, Github, BookOpen, Code2 } from 'lucide-react';
+import Footer from '@/components/Footer';
 
 
 export default function Home() {
@@ -97,6 +98,7 @@ export default function Home() {
                         desc="Ask questions about your codebase and get answers with citations."
                     />
                 </div>
+                <Footer />
             </div>
         </div>
     );
