@@ -52,8 +52,8 @@ export default function Home() {
 
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-[calc(100vh-80px)]" style={{ padding: '4rem 1rem' }}>
-            <div className="container animate-fade-in" style={{ textAlign: 'center', maxWidth: '800px' }}>
+        <div className="flex flex-col items-center justify-start w-full h-full overflow-y-auto" style={{ padding: '4rem 1rem' }}>
+            <div className="container animate-fade-in" style={{ textAlign: 'center', maxWidth: '800px', margin: '0 auto' }}>
                 <div style={{ marginBottom: '2rem' }}>
                     <h1 style={{ fontSize: '3.5rem', lineHeight: 1.1, background: 'linear-gradient(to right, #1a1a1a, #7456F1)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', fontWeight: 800 }}>
                         Understand any codebase<br />in seconds.
